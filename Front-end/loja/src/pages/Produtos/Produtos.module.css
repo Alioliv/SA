@@ -1,0 +1,469 @@
+/* ── Página ── */
+.page {
+  width: 100%;
+  min-height: 100vh;
+  background: #f9fafb;
+}
+
+/* ── Header ── */
+.header {
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0 32px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  width: 34px;
+  height: 34px;
+  background: #4f46e5;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.titulo {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.sub {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.sub strong { color: #374151 }
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btnDashboard {
+  background: none;
+  border: 1px solid #e5e7eb;
+  color: #4f46e5;
+  border-radius: 7px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btnDashboard:hover {
+  background: #eef2ff;
+  border-color: #c7d2fe;
+}
+
+.btnLogout {
+  background: none;
+  border: 1px solid #e5e7eb;
+  color: #6b7280;
+  border-radius: 7px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btnLogout:hover {
+  border-color: #fca5a5;
+  color: #dc2626;
+  background: #fef2f2;
+}
+
+/* ── Main ── */
+.main {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+/* ── Topo da tabela ── */
+.topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.topoLeft {}
+
+.contagem {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.topoRight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Busca */
+.buscaWrap {
+  position: relative;
+}
+
+.buscaIcon {
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  font-size: 17px;
+  pointer-events: none;
+}
+
+.buscaInput {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 9px 32px 9px 34px;
+  font-size: 13px;
+  color: #111827;
+  background: #fff;
+  outline: none;
+  width: 240px;
+  font-family: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.buscaInput:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.buscaInput::placeholder { color: #9ca3af }
+
+.buscaLimpar {
+  position: absolute;
+  right: 9px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #9ca3af;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 2px 4px;
+  transition: color 0.15s;
+}
+
+.buscaLimpar:hover { color: #374151 }
+
+/* Botão novo */
+.btnNovo {
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.btnNovo:hover { background: #4338ca }
+
+/* ── Tabela ── */
+.tableCard {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.table thead tr {
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.table th {
+  padding: 11px 16px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #9ca3af;
+}
+
+.table td {
+  padding: 13px 16px;
+  color: #111827;
+  border-bottom: 1px solid #f3f4f6;
+  vertical-align: middle;
+}
+
+.table tbody tr:last-child td { border-bottom: none }
+.table tbody tr:hover { background: #f9fafb }
+
+.tdIdx  { color: #d1d5db !important; font-size: 12px !important; width: 36px }
+.tdNome { font-weight: 500 }
+.tdMuted { color: #6b7280 !important }
+
+.thAcoes { text-align: right !important }
+.tdAcoes { text-align: right; white-space: nowrap }
+
+/* ── Badge estoque ── */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badgeVerde    { background: #dcfce7; color: #15803d }
+.badgeAmarelo  { background: #fef9c3; color: #a16207 }
+.badgeVermelho { background: #fee2e2; color: #dc2626 }
+
+/* ── Botões ação na linha ── */
+.btnEditar {
+  background: none;
+  border: 1px solid #e5e7eb;
+  color: #4f46e5;
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+  margin-right: 6px;
+  transition: all 0.15s;
+}
+
+.btnEditar:hover {
+  background: #eef2ff;
+  border-color: #c7d2fe;
+}
+
+.btnExcluir {
+  background: none;
+  border: 1px solid #e5e7eb;
+  color: #dc2626;
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btnExcluir:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+}
+
+/* ── Centro (loading / vazio) ── */
+.centro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 60px 20px;
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+.spinner {
+  width: 22px;
+  height: 22px;
+  border: 2px solid #e5e7eb;
+  border-top-color: #4f46e5;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg) } }
+
+/* ── Formulário ── */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #111827;
+  background: #fff;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.field input::placeholder,
+.field textarea::placeholder { color: #9ca3af }
+
+.field textarea { resize: vertical; min-height: 72px }
+
+.field select { cursor: pointer }
+
+/* ── Erro ── */
+.erro {
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  color: #dc2626;
+  font-size: 13px;
+  padding: 10px 13px;
+  border-radius: 8px;
+}
+
+/* ── Ações do form ── */
+.formAcoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.btnCancelar {
+  background: none;
+  border: 1px solid #e5e7eb;
+  color: #6b7280;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btnCancelar:hover:not(:disabled) { background: #f9fafb }
+.btnCancelar:disabled { opacity: 0.5; cursor: not-allowed }
+
+.btnSalvar {
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btnSalvar:hover:not(:disabled) { background: #4338ca }
+.btnSalvar:disabled { opacity: 0.6; cursor: not-allowed }
+
+/* ── Modal exclusão ── */
+.deleteBox {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.deleteBox p {
+  font-size: 14px;
+  color: #374151;
+  line-height: 1.6;
+}
+
+.deleteBox strong { color: #111827 }
+
+.deleteAviso {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.deleteAcoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.btnDanger {
+  background: #dc2626;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btnDanger:hover:not(:disabled) { background: #b91c1c }
+.btnDanger:disabled { opacity: 0.6; cursor: not-allowed }
+
+/* ── Responsivo ── */
+@media (max-width: 640px) {
+  .header  { padding: 0 16px }
+  .main    { padding: 20px 16px }
+  .topo    { flex-direction: column; align-items: flex-start }
+  .topoRight { width: 100%; justify-content: space-between }
+  .buscaInput { width: 100% }
+  .row     { grid-template-columns: 1fr }
+  .table th:nth-child(3),
+  .table td:nth-child(3) { display: none }
+}
