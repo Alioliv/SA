@@ -31,8 +31,8 @@
 }
 
 .field input:focus {
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+  border-color: #4686e5;
+  box-shadow: 0 0 0 3px rgba(70, 134, 229, 0.12);
 }
 
 .field input::placeholder {
@@ -50,7 +50,7 @@
 
 .btnSubmit {
   width: 100%;
-  background: #4f46e5;
+  background: #4686e5;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -64,7 +64,7 @@
 }
 
 .btnSubmit:hover:not(:disabled) {
-  background: #4338ca;
+  background: #4686e5;
 }
 
 .btnSubmit:active:not(:disabled) {
@@ -83,7 +83,7 @@
 }
 
 .linkLogin a {
-  color: #4f46e5;
+  color: #4686e5;
   font-weight: 600;
   text-decoration: none;
 }

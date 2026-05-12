@@ -25,7 +25,7 @@
 .logo {
   width: 34px;
   height: 34px;
-  background: #4f46e5;
+  background: #4686e5;
   color: #fff;
   border-radius: 8px;
   font-size: 16px;
@@ -61,7 +61,7 @@
 .btnDashboard {
   background: none;
   border: 1px solid #e5e7eb;
-  color: #4f46e5;
+  color: #4686e5;
   border-radius: 7px;
   padding: 7px 14px;
   font-size: 13px;
@@ -153,7 +153,7 @@
 }
 
 .buscaInput:focus {
-  border-color: #4f46e5;
+  border-color: #4686e5;
   box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
 
@@ -177,7 +177,7 @@
 
 /* Botão novo */
 .btnNovo {
-  background: #4f46e5;
+  background: #4686e5;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -190,7 +190,7 @@
   transition: background 0.15s;
 }
 
-.btnNovo:hover { background: #4338ca }
+.btnNovo:hover { background: #4686e5;}
 
 /* ── Tabela ── */
 .tableCard {
@@ -255,7 +255,7 @@
 .btnEditar {
   background: none;
   border: 1px solid #e5e7eb;
-  color: #4f46e5;
+  color: #4686e5;
   border-radius: 6px;
   padding: 5px 12px;
   font-size: 12px;
@@ -302,7 +302,7 @@
   width: 22px;
   height: 22px;
   border: 2px solid #e5e7eb;
-  border-top-color: #4f46e5;
+  border-top-color: #4686e5;
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
 }
@@ -354,8 +354,8 @@
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  border-color: #4686e5;
+  box-shadow: 0 0 0 3px rgba(70, 134, 229, 0.1);
 }
 
 .field input::placeholder,
@@ -399,7 +399,7 @@
 .btnCancelar:disabled { opacity: 0.5; cursor: not-allowed }
 
 .btnSalvar {
-  background: #4f46e5;
+  background: #4686e5;
   color: #fff;
   border: none;
   border-radius: 8px;
