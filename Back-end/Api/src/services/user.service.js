@@ -1,107 +1,95 @@
-import prisma from '../config/db.js'
-import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
+const { pool } = require('../config/db')
+const bcrypt = require('bcryptjs')
 
-const SECRET = process.env.JWT_SECRET || 'secret123'
+const userService = {
 
-export async function createUser(req, res) {
-  const { name, email, password } = req.body
+  async getAll() {
+    const { rows } = await pool.query(
+      'SELECT id, nome, email, criado_em FROM usuarios ORDER BY criado_em DESC'
+    )
+    return rows
+  },
 
-  if (!name || !email || !password)
-    return res.status(400).json({ error: 'Preencha todos os campos.' })
+  async getById(id) {
+    const { rows } = await pool.query(
+      'SELECT id, nome, email, criado_em FROM usuarios WHERE id = $1',
+      [id]
+    )
+    return rows[0] || null
+  },
 
-  try {
-    const hashed = await bcrypt.hash(password, 10)
-    const user = await prisma.user.create({
-      data: { name, email, password: hashed },
-    })
-    return res.status(201).json({ id: user.id, name: user.name, email: user.email })
-  } catch (err) {
-    if (err.code === 'P2002')
-      return res.status(409).json({ error: 'Email já cadastrado.' })
-    return res.status(500).json({ error: 'Erro interno.' })
-  }
+  async getByEmail(email) {
+    const { rows } = await pool.query(
+      'SELECT * FROM usuarios WHERE email = $1',
+      [email]
+    )
+    return rows[0] || null
+  },
+
+  async create({ nome, email, senha }) {
+    const existing = await userService.getByEmail(email)
+    if (existing) {
+      const err = new Error('E-mail já cadastrado.')
+      err.status = 409
+      throw err
+    }
+
+    const hash = await bcrypt.hash(senha, 10)
+    const { rows } = await pool.query(
+      `INSERT INTO usuarios (nome, email, senha)
+       VALUES ($1, $2, $3)
+       RETURNING id, nome, email, criado_em`,
+      [nome, email, hash]
+    )
+    return rows[0]
+  },
+
+  async update(id, { nome, email, senha }) {
+    const usuario = await userService.getById(id)
+    if (!usuario) {
+      const err = new Error('Usuário não encontrado.')
+      err.status = 404
+      throw err
+    }
+
+    if (email && email !== usuario.email) {
+      const existing = await userService.getByEmail(email)
+      if (existing) {
+        const err = new Error('E-mail já em uso por outro usuário.')
+        err.status = 409
+        throw err
+      }
+    }
+
+    const novoNome  = nome  || usuario.nome
+    const novoEmail = email || usuario.email
+
+    if (senha) {
+      const hash = await bcrypt.hash(senha, 10)
+      await pool.query(
+        'UPDATE usuarios SET nome=$1, email=$2, senha=$3 WHERE id=$4',
+        [novoNome, novoEmail, hash, id]
+      )
+    } else {
+      await pool.query(
+        'UPDATE usuarios SET nome=$1, email=$2 WHERE id=$3',
+        [novoNome, novoEmail, id]
+      )
+    }
+
+    return userService.getById(id)
+  },
+
+  async delete(id) {
+    const usuario = await userService.getById(id)
+    if (!usuario) {
+      const err = new Error('Usuário não encontrado.')
+      err.status = 404
+      throw err
+    }
+    await pool.query('DELETE FROM usuarios WHERE id=$1', [id])
+    return { message: 'Usuário excluído com sucesso.' }
+  },
 }
 
-export async function loginUser(req, res) {
-  const { email, password } = req.body
-
-  if (!email || !password)
-    return res.status(400).json({ error: 'Preencha todos os campos.' })
-
-  try {
-    const user = await prisma.user.findUnique({ where: { email } })
-    if (!user)
-      return res.status(404).json({ error: 'Usuário não encontrado.' })
-
-    const valid = await bcrypt.compare(password, user.password)
-    if (!valid)
-      return res.status(401).json({ error: 'Senha incorreta.' })
-
-    const token = jwt.sign({ id: user.id, email: user.email }, SECRET, {
-      expiresIn: '1d',
-    })
-
-    return res.json({
-      token,
-      user: { id: user.id, name: user.name, email: user.email },
-    })
-  } catch (err) {
-    return res.status(500).json({ error: 'Erro interno.' })
-  }
-}
-
-export async function listUsers(req, res) {
-  try {
-    const users = await prisma.user.findMany({
-      select: { id: true, name: true, email: true, createdAt: true },
-      orderBy: { createdAt: 'desc' },
-    })
-    return res.json(users)
-  } catch (err) {
-    return res.status(500).json({ error: 'Erro interno.' })
-  }
-}
-
-export async function getUserById(req, res) {
-  const { id } = req.params
-  try {
-    const user = await prisma.user.findUnique({
-      where: { id: Number(id) },
-      select: { id: true, name: true, email: true, createdAt: true },
-    })
-    if (!user)
-      return res.status(404).json({ error: 'Usuário não encontrado.' })
-    return res.json(user)
-  } catch (err) {
-    return res.status(500).json({ error: 'Erro interno.' })
-  }
-}
-
-export async function updateUser(req, res) {
-  const { id } = req.params
-  const { name, email } = req.body
-  try {
-    const user = await prisma.user.update({
-      where: { id: Number(id) },
-      data: { name, email },
-    })
-    return res.json({ id: user.id, name: user.name, email: user.email })
-  } catch (err) {
-    if (err.code === 'P2025')
-      return res.status(404).json({ error: 'Usuário não encontrado.' })
-    return res.status(500).json({ error: 'Erro.' })
-  }
-}
-
-export async function deleteUser(req, res) {
-  const { id } = req.params
-  try {
-    await prisma.user.delete({ where: { id: Number(id) } })
-    return res.json({ message: 'Usuário deletado com sucesso.' })
-  } catch (err) {
-    if (err.code === 'P2025')
-      return res.status(404).json({ error: 'Usuário não encontrado.' })
-    return res.status(500).json({ error: 'Erro.' })
-  }
-}
+module.exports = userService

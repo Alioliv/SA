@@ -3,6 +3,8 @@
   flex-direction: column;
   gap: 16px;
   width: 100%;
+  max-width: 100%; /* garante que não ultrapasse o pai */
+  box-sizing: border-box;
 }
 
 .field {
@@ -18,10 +20,11 @@
 }
 
 .field input {
-  width: 100%;
+   width: 100%;
+  box-sizing: border-box; /* garante que padding não estoure a largura */
   border: 1px solid #d1d5db;
   border-radius: 8px;
-  padding: 11px 13px;
+  padding: 11px 10px;
   font-size: 14px;
   color: #111827;
   background: #fff;
