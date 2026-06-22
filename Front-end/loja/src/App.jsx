@@ -5,10 +5,8 @@ import PrivateRouter from './components/PrivateRouter/PrivateRouter'
 import Login     from './pages/Login/Login'
 import Register  from './pages/Register/Register'
 import Dashboard from './pages/Dashboard/Dashboard'
-
-// descomente conforme for criando:
- import Produtos  from './pages/Produtos/Produtos'
-// import Usuarios  from './pages/Usuarios/Usuarios'
+import Produtos  from './pages/Produtos/Produtos'
+// import Usuarios  from './pages/Usuarios/Usuarios'  // descomente quando criar a página
 
 export default function App() {
   return (
@@ -19,12 +17,8 @@ export default function App() {
           {/* ── Públicas ── */}
           <Route path="/login"    element={<Login />}    />
           <Route path="/cadastro" element={<Register />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/produtos" element={<Produtos />} /> 
 
-
-
-          {/* ── Privadas ── 
+          {/* ── Privadas ── */}
           <Route
             path="/dashboard"
             element={
@@ -32,15 +26,26 @@ export default function App() {
                 <Dashboard />
               </PrivateRouter>
             }
-          /> */}
-
-          {/* descomente conforme for criando as páginas:
-          <Route path="/produtos" element={<PrivateRouter><Produtos /></PrivateRouter>} />
-          <Route path="/usuarios" element={<PrivateRouter><Usuarios /></PrivateRouter>} />
+          />
+          <Route
+            path="/produtos"
+            element={
+              <PrivateRouter>
+                <Produtos />
+              </PrivateRouter>
+            }
+          />
+          {/* Descomente quando criar Usuarios:
+          <Route
+            path="/usuarios"
+            element={
+              <PrivateRouter>
+                <Usuarios />
+              </PrivateRouter>
+            }
+          />
           */}
-          
 
-          {/* Raiz → redireciona */}
           <Route path="/"  element={<Navigate to="/dashboard" replace />} />
           <Route path="*"  element={<Navigate to="/login"     replace />} />
 

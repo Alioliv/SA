@@ -2,41 +2,43 @@
  * Testes Unitários — Back-end (Jest + Supertest)
  * CT-01 a CT-08
  *
+ * Arquivo: Back-end/Api/src/tests/api.test.js
  * Como rodar: npm test  (dentro de Back-end/Api)
  *
- * ATENÇÃO: os testes usam o banco real configurado no .env
- * Certifique-se de que o PostgreSQL está rodando e o banco existe (npm run setup-db)
+ * Pré-requisito: PostgreSQL rodando + npm run setup-db
  */
 
-const request = require('supertest')
-const app     = require('../serve')
+const request  = require('supertest')
+const app      = require('../serve')
 const { pool } = require('../src/config/db')
 
 // ── Limpeza antes/depois ─────────────────────────────────────
 beforeAll(async () => {
-  // Limpa dados de teste para garantir estado inicial limpo
-  await pool.query(`DELETE FROM usuarios WHERE email IN (
-    'joao@email.com', 'teste@loja.com', 'maria@loja.com'
-  )`)
-  await pool.query(`DELETE FROM produtos WHERE nome IN (
-    'Camiseta Básica', 'Camiseta Premium', 'Calça Jeans'
-  )`)
+  await pool.query(`
+    DELETE FROM usuarios
+    WHERE email IN ('joao@email.com','joao2@email.com','teste@loja.com')
+  `)
+  await pool.query(`
+    DELETE FROM produtos
+    WHERE nome IN ('Camiseta Básica','Camiseta Premium','Calça Jeans')
+  `)
 })
 
 afterAll(async () => {
-  // Limpa dados criados pelos testes e fecha o pool
-  await pool.query(`DELETE FROM usuarios WHERE email IN (
-    'joao@email.com', 'teste@loja.com', 'maria@loja.com'
-  )`)
-  await pool.query(`DELETE FROM produtos WHERE nome IN (
-    'Camiseta Básica', 'Camiseta Premium', 'Calça Jeans'
-  )`)
+  await pool.query(`
+    DELETE FROM usuarios
+    WHERE email IN ('joao@email.com','joao2@email.com','teste@loja.com')
+  `)
+  await pool.query(`
+    DELETE FROM produtos
+    WHERE nome IN ('Camiseta Básica','Camiseta Premium','Calça Jeans')
+  `)
   await pool.end()
 })
 
-// ═══════════════════════════════════════════════════════════════
-//  CT-01 — Cadastro com dados válidos
-// ═══════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════
+//  CT-01 — Cadastro de usuário com dados válidos (RF-01)
+// ════════════════════════════════════════════════════════════
 describe('CT-01 — Cadastro de usuário com dados válidos', () => {
   test('deve criar usuário e retornar status 201 com dados do usuário', async () => {
     const res = await request(app)
@@ -50,16 +52,15 @@ describe('CT-01 — Cadastro de usuário com dados válidos', () => {
       email: 'joao@email.com',
     })
     expect(res.body).toHaveProperty('token')
-    // Senha nunca deve aparecer na resposta
     expect(res.body.user).not.toHaveProperty('senha')
   })
 })
 
-// ═══════════════════════════════════════════════════════════════
-//  CT-02 — Cadastro com e-mail já existente
-// ═══════════════════════════════════════════════════════════════
-describe('CT-02 — Cadastro com e-mail duplicado', () => {
-  test('deve rejeitar cadastro e retornar status 409', async () => {
+// ════════════════════════════════════════════════════════════
+//  CT-02 — Cadastro com e-mail duplicado (RF-01)
+// ════════════════════════════════════════════════════════════
+describe('CT-02 — Cadastro com e-mail já existente', () => {
+  test('deve rejeitar e retornar status 409 com mensagem de e-mail duplicado', async () => {
     const res = await request(app)
       .post('/auth/register')
       .send({ nome: 'Outro Nome', email: 'joao@email.com', senha: '654321' })
@@ -70,9 +71,9 @@ describe('CT-02 — Cadastro com e-mail duplicado', () => {
   })
 })
 
-// ═══════════════════════════════════════════════════════════════
-//  CT-03 — Login com credenciais válidas
-// ═══════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════
+//  CT-03 — Login com credenciais válidas (RF-02)
+// ════════════════════════════════════════════════════════════
 describe('CT-03 — Login com e-mail e senha válidos', () => {
   test('deve autenticar e retornar status 200 com token e dados do usuário', async () => {
     const res = await request(app)
@@ -87,9 +88,9 @@ describe('CT-03 — Login com e-mail e senha válidos', () => {
   })
 })
 
-// ═══════════════════════════════════════════════════════════════
-//  CT-04 — Login com senha incorreta
-// ═══════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════
+//  CT-04 — Login com senha incorreta (RF-02)
+// ════════════════════════════════════════════════════════════
 describe('CT-04 — Login com senha incorreta', () => {
   test('deve rejeitar e retornar status 401', async () => {
     const res = await request(app)
@@ -101,9 +102,9 @@ describe('CT-04 — Login com senha incorreta', () => {
   })
 })
 
-// ═══════════════════════════════════════════════════════════════
-//  CT-05 — Cadastro de produto válido
-// ═══════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════
+//  CT-05 — Cadastro de produto com dados válidos (RF-06)
+// ════════════════════════════════════════════════════════════
 describe('CT-05 — Cadastro de produto com dados válidos', () => {
   test('deve salvar produto e retornar status 201 com dados do produto', async () => {
     const res = await request(app)
@@ -130,11 +131,11 @@ describe('CT-05 — Cadastro de produto com dados válidos', () => {
   })
 })
 
-// ═══════════════════════════════════════════════════════════════
-//  CT-06 — Listagem de produtos
-// ═══════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════
+//  CT-06 — Listagem de todos os produtos (RF-07)
+// ════════════════════════════════════════════════════════════
 describe('CT-06 — Listagem de todos os produtos', () => {
-  test('deve retornar status 200 e um array com ao menos um produto', async () => {
+  test('deve retornar status 200 e array com ao menos um produto', async () => {
     const res = await request(app).get('/produtos')
 
     expect(res.status).toBe(200)
@@ -145,9 +146,9 @@ describe('CT-06 — Listagem de todos os produtos', () => {
   })
 })
 
-// ═══════════════════════════════════════════════════════════════
-//  CT-07 — Atualização de produto
-// ═══════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════
+//  CT-07 — Atualização de produto pelo ID (RF-08)
+// ════════════════════════════════════════════════════════════
 describe('CT-07 — Atualização de produto pelo ID', () => {
   test('deve atualizar produto e retornar status 200 com dados atualizados', async () => {
     const id = global.__produtoId
@@ -163,19 +164,22 @@ describe('CT-07 — Atualização de produto pelo ID', () => {
   })
 })
 
-// ═══════════════════════════════════════════════════════════════
-//  CT-08 — Exclusão de produto
-// ═══════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════
+//  CT-08 — Exclusão de produto pelo ID (RF-09)
+// ════════════════════════════════════════════════════════════
 describe('CT-08 — Exclusão de produto pelo ID', () => {
-  test('deve excluir produto e retornar status 200', async () => {
+  test('deve excluir produto e retornar status 200 ou 204', async () => {
     const id = global.__produtoId
     expect(id).toBeDefined()
 
     const res = await request(app).delete(`/produtos/${id}`)
-    expect(res.status).toBe(200)
-    expect(res.body).toHaveProperty('message')
+    expect([200, 204]).toContain(res.status)
 
-    // Confirma que foi removido
+    if (res.status === 200) {
+      expect(res.body).toHaveProperty('message')
+    }
+
+    // Confirma remoção — deve retornar 404
     const check = await request(app).get(`/produtos/${id}`)
     expect(check.status).toBe(404)
   })

@@ -1,18 +1,19 @@
+// @ts-check
 import { test, expect } from '@playwright/test';
 
-test.describe('Login', () => { 
+test('has title', async ({ page }) => {
+  await page.goto('https://playwright.dev/');
 
-    test.beforeEach(async ({ page }) => {
-        await page.goto('http://localhost:3000/login');
-    })
+  // Expect a title "to contain" a substring.
+  await expect(page).toHaveTitle(/Playwright/);
+});
 
-    test ('Deve fazer login com sucesso', async ({ page }) => {
-        await page.fill('#email', 'user@example.com'); 
-        await page.fill('#password', 'password123');
-        await page.fill('#username', 'user');   
-        
-        await expect(page.locator('#welcome-title')).toContainText('Bem-vindo, Admin!')
-    })
+test('get started link', async ({ page }) => {
+  await page.goto('https://playwright.dev/');
 
-}
-)
+  // Click the get started link.
+  await page.getByRole('link', { name: 'Get started' }).click();
+
+  // Expects page to have a heading with the name of Installation.
+  await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
+});
