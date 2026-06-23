@@ -6,7 +6,7 @@ import Login     from './pages/Login/Login'
 import Register  from './pages/Register/Register'
 import Dashboard from './pages/Dashboard/Dashboard'
 import Produtos  from './pages/Produtos/Produtos'
-// import Usuarios  from './pages/Usuarios/Usuarios'  // descomente quando criar a página
+import Usuarios  from './pages/Usuarios/Usuarios' 
 
 export default function App() {
   return (
@@ -35,7 +35,7 @@ export default function App() {
               </PrivateRouter>
             }
           />
-          {/* Descomente quando criar Usuarios:
+          {
           <Route
             path="/usuarios"
             element={
@@ -44,7 +44,7 @@ export default function App() {
               </PrivateRouter>
             }
           />
-          */}
+        }
 
           <Route path="/"  element={<Navigate to="/dashboard" replace />} />
           <Route path="*"  element={<Navigate to="/login"     replace />} />
